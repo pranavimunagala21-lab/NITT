@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{{name}}</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #ffffff;
+      color: #111827;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 48px;
+      min-height: 620px;
+      padding: 56px 0;
+      box-sizing: border-box;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+      margin-bottom: 22px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: 60px;
+      line-height: 1;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      max-width: 560px;
+      margin: 20px 0 0;
+      color: #526173;
+      font-size: 21px;
+      line-height: 1.55;
+    }
+
+    .hero img.hero-img {
+      width: 44%;
+      min-width: 360px;
+      height: 430px;
+      object-fit: cover;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(17, 24, 39, 0.18);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 16px;
+      color: #4a6cf7;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .section-title {
+      margin: 0 0 22px;
+      font-size: 34px;
+    }
+
+    .services-section,
+    .about-section,
+    .cta {
+      padding: 64px 0;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .service-card {
+      padding: 24px;
+      min-height: 110px;
+      display: flex;
+      align-items: flex-end;
+      border-radius: 18px;
+      background: #f0f4ff;
+      color: #172033;
+      font-weight: 800;
+      box-shadow: inset 0 0 0 1px #dfe6ff;
+    }
+
+    .split {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      padding: 28px;
+      border-radius: 24px;
+      background: #111827;
+      color: white;
+    }
+
+    .split img {
+      width: 48%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: 18px;
+    }
+
+    .split p {
+      margin: 0;
+      color: #d7deea;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .cta {
+      margin-bottom: 48px;
+      padding: 48px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #4a6cf7, #1f9d64);
+      color: white;
+      text-align: center;
+    }
+
+    .cta h2 {
+      margin: 0 0 12px;
+      font-size: 36px;
+    }
+
+    .cta p {
+      margin: 8px 0;
+      color: white;
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .split {
+        flex-direction: column;
+      }
+
+      .hero img.hero-img,
+      .split img {
+        width: 100%;
+        min-width: 0;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 44px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <div class="hero">
+      <div class="hero-text">
+        <img src="{{logo}}" class="logo" />
+        <span class="eyebrow">Startup Website</span>
+        <h1 contenteditable="true">{{name}}</h1>
+        <p contenteditable="true">{{tagline}}</p>
+      </div>
+      <img src="{{hero_image}}" class="hero-img" />
+    </div>
+
+    <section class="services-section">
+      <span class="eyebrow">What We Do</span>
+      <h2 class="section-title" contenteditable="true">Services built for growth</h2>
+      <div class="services-grid">
+        {{services}}
+      </div>
+    </section>
+
+    <section class="about-section">
+      <div class="split">
+        <img src="{{about_image}}" />
+        <p contenteditable="true">{{description}}</p>
+      </div>
+    </section>
+
+    <section class="cta">
+      <h2 contenteditable="true">Ready to get started?</h2>
+      <p><strong>Phone:</strong> {{phone}}</p>
+      <p><strong>Email:</strong> {{email}}</p>
+      <p><strong>Address:</strong> {{address}}</p>
+      <p><strong>Hours:</strong> {{hours}}</p>
+    </section>
+  </main>
+</body>
+</html>
