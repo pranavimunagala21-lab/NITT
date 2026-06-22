@@ -1,0 +1,1 @@
+A React-based single-page application for generating, managing, and editing business websites with AI assistance and administrative oversight.

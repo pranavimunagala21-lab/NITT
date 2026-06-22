@@ -1,0 +1,127 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: en-US
+branch: main
+nodes_managed: true
+exported_at: "2026-06-21T07:55:14Z"
+modules:
+    "":
+        dir_name: AI-Powered Website Builder Platform
+        title: AI-Powered Website Builder Platform
+        scope:
+            - .gitignore
+            - .vscode\settings.json
+            - Backend\.env
+            - Backend\auth.py
+            - Backend\auth_routes.py
+            - Backend\db.py
+            - Backend\main.py
+            - Backend\project_routes.py
+            - Backend\requirements.txt
+            - Backend\schemas.py
+            - Backend\static\nit-trichy-logo.png
+            - Backend\templates\creative.html
+            - Backend\templates\generic.html
+            - Backend\templates\luxury.html
+            - Backend\templates\modern.html
+            - Backend\test.html
+            - frontend\README.md
+            - frontend\dev-server.err.log
+            - frontend\dev-server.log
+            - frontend\package-lock.json
+            - frontend\package.json
+            - frontend\public\favicon.ico
+            - frontend\public\index.html
+            - frontend\public\logo192.png
+            - frontend\public\logo512.png
+            - frontend\public\manifest.json
+            - frontend\public\nit-trichy-logo.jpg
+            - frontend\public\nit-trichy-logo.png
+            - frontend\public\robots.txt
+            - frontend\public\templates\generic-preview.png
+            - frontend\public\templates\luxury-preview.png
+            - frontend\public\templates\modern-preview.png
+            - frontend\src\App.css
+            - frontend\src\App.js
+            - frontend\src\App.test.js
+            - frontend\src\components\ActivityFeed.css
+            - frontend\src\components\ActivityFeed.jsx
+            - frontend\src\components\Charts.css
+            - frontend\src\components\Charts.jsx
+            - frontend\src\components\FeedbackList.css
+            - frontend\src\components\FeedbackList.jsx
+            - frontend\src\components\StatsCard.css
+            - frontend\src\components\StatsCard.jsx
+            - frontend\src\components\UsersTable.css
+            - frontend\src\components\UsersTable.jsx
+            - frontend\src\index.css
+            - frontend\src\index.js
+            - frontend\src\logo.svg
+            - frontend\src\pages\AdminDashboard.css
+            - frontend\src\pages\AdminDashboard.jsx
+            - frontend\src\reportWebVitals.js
+            - frontend\src\services\adminApi.js
+            - frontend\src\setupTests.js
+            - test.db
+        source_files: []
+        children:
+            - backend
+            - frontend
+        depends_on: []
+        related_to: []
+    backend:
+        dir_name: AI Website Builder Backend API
+        title: AI Website Builder Backend API
+        scope:
+            - Backend/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    configuration_system:
+        dir_name: Environment Variable Configuration with python-dotenv
+        title: Environment Variable Configuration with python-dotenv
+        scope: []
+        source_files:
+            - Backend/.env
+            - Backend/main.py
+            - Backend/db.py
+            - Backend/requirements.txt
+            - frontend/src/App.js
+            - frontend/src/services/adminApi.js
+        children: []
+        depends_on: []
+        related_to: []
+    dependency_management:
+        dir_name: Dual-Stack Dependency Management (Python & Node.js)
+        title: Dual-Stack Dependency Management (Python & Node.js)
+        scope: []
+        source_files:
+            - Backend/requirements.txt
+            - frontend/package.json
+            - frontend/package-lock.json
+        children: []
+        depends_on: []
+        related_to: []
+    frontend:
+        dir_name: AI Website Builder Frontend
+        title: AI Website Builder Frontend
+        scope:
+            - frontend/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []
+    logging_system:
+        dir_name: Informal Logging with Python Standard Library and Print Statements
+        title: Informal Logging with Python Standard Library and Print Statements
+        scope: []
+        source_files:
+            - Backend/main.py
+            - Backend/auth.py
+            - Backend/db.py
+            - frontend/src/App.js
+            - frontend/src/index.js
+        children: []
+        depends_on: []
+        related_to: []

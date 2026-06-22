@@ -1,0 +1,135 @@
+/* ── Admin Dashboard Container ────────────────────────────────────────────── */
+.admin-container {
+  min-height: 100vh;
+  background: #f4f6f9;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: #1a2332;
+  padding: 0 0 60px;
+}
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+.admin-header-main {
+  background: #ffffff;
+  border-bottom: 1px solid #e4e9f0;
+  box-shadow: 0 2px 10px rgba(26, 35, 50, 0.04);
+  padding: 20px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.admin-header-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.admin-logo {
+  font-size: 32px;
+  background: #f0f4ff;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.admin-heading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a2332;
+  margin: 0 0 4px;
+}
+.admin-subheading {
+  font-size: 13px;
+  color: #647084;
+  margin: 0;
+}
+
+.admin-logout-btn {
+  background: #fdf2f2;
+  color: #9b1c1c;
+  border: 1px solid #fbd5d5;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.admin-logout-btn:hover {
+  background: #fde8e8;
+  color: #c81e1e;
+  border-color: #f8b4b4;
+  transform: translateY(-1px);
+}
+
+/* ── Content Area ─────────────────────────────────────────────────────────── */
+.admin-content-main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.admin-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-section-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Grids ────────────────────────────────────────────────────────────────── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .admin-header-main {
+    padding: 16px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .admin-logout-btn {
+    align-self: stretch;
+    text-align: center;
+  }
+  .admin-content-main {
+    padding: 20px 16px;
+    gap: 28px;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

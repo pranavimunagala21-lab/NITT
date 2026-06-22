@@ -1,0 +1,3 @@
+- Hybrid data fetching pattern where service functions attempt a backend API call first and silently fall back to `localStorage` data if the network request fails or returns an error.
+- Consistent use of `localStorage` keys ('users', 'websites', 'ls_ai_log', 'feedback') as the primary source of truth for client-side analytics and user-generated content synchronization.
+- Functional components with hooks (`useState`, `useEffect`, `useCallback`) are used exclusively for state management and side effects, avoiding class components or external state libraries like Redux.

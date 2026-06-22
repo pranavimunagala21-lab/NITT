@@ -1,0 +1,12 @@
+schema_version: 1
+module_path: logging_system
+title: Informal Logging with Python Standard Library and Print Statements
+scope: []
+source_files:
+    - Backend/main.py
+    - Backend/auth.py
+    - Backend/db.py
+    - frontend/src/App.js
+    - frontend/src/index.js
+depends_on: []
+related_to: []

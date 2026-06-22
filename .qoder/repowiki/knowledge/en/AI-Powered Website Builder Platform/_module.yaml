@@ -1,0 +1,61 @@
+schema_version: 1
+module_path: ""
+title: AI-Powered Website Builder Platform
+scope:
+    - .gitignore
+    - .vscode\settings.json
+    - Backend\.env
+    - Backend\auth.py
+    - Backend\auth_routes.py
+    - Backend\db.py
+    - Backend\main.py
+    - Backend\project_routes.py
+    - Backend\requirements.txt
+    - Backend\schemas.py
+    - Backend\static\nit-trichy-logo.png
+    - Backend\templates\creative.html
+    - Backend\templates\generic.html
+    - Backend\templates\luxury.html
+    - Backend\templates\modern.html
+    - Backend\test.html
+    - frontend\README.md
+    - frontend\dev-server.err.log
+    - frontend\dev-server.log
+    - frontend\package-lock.json
+    - frontend\package.json
+    - frontend\public\favicon.ico
+    - frontend\public\index.html
+    - frontend\public\logo192.png
+    - frontend\public\logo512.png
+    - frontend\public\manifest.json
+    - frontend\public\nit-trichy-logo.jpg
+    - frontend\public\nit-trichy-logo.png
+    - frontend\public\robots.txt
+    - frontend\public\templates\generic-preview.png
+    - frontend\public\templates\luxury-preview.png
+    - frontend\public\templates\modern-preview.png
+    - frontend\src\App.css
+    - frontend\src\App.js
+    - frontend\src\App.test.js
+    - frontend\src\components\ActivityFeed.css
+    - frontend\src\components\ActivityFeed.jsx
+    - frontend\src\components\Charts.css
+    - frontend\src\components\Charts.jsx
+    - frontend\src\components\FeedbackList.css
+    - frontend\src\components\FeedbackList.jsx
+    - frontend\src\components\StatsCard.css
+    - frontend\src\components\StatsCard.jsx
+    - frontend\src\components\UsersTable.css
+    - frontend\src\components\UsersTable.jsx
+    - frontend\src\index.css
+    - frontend\src\index.js
+    - frontend\src\logo.svg
+    - frontend\src\pages\AdminDashboard.css
+    - frontend\src\pages\AdminDashboard.jsx
+    - frontend\src\reportWebVitals.js
+    - frontend\src\services\adminApi.js
+    - frontend\src\setupTests.js
+    - test.db
+source_files: []
+depends_on: []
+related_to: []

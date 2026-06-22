@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: backend
+title: AI Website Builder Backend API
+scope:
+    - Backend/
+source_files: []
+depends_on: []
+related_to: []

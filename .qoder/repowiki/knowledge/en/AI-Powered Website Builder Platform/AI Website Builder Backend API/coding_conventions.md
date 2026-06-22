@@ -1,0 +1,4 @@
+- All route handlers use Pydantic BaseModel classes for request payload validation (UserCreate, UserLogin, VerifyOtpRequest, Contact, BusinessInput, PublishRequest)
+- Authentication-protected endpoints use FastAPI dependency injection with Depends(get_current_user) or Depends(require_admin) for role-based access control
+- Error responses consistently use HTTPException with explicit status codes (400, 401, 403, 404, 500) and descriptive detail messages
+- Database queries use string-based user_id references rather than ObjectId for cross-collection lookups (e.g., projects_collection.find with user_id as string)

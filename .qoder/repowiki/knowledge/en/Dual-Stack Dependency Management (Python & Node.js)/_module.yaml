@@ -1,0 +1,10 @@
+schema_version: 1
+module_path: dependency_management
+title: Dual-Stack Dependency Management (Python & Node.js)
+scope: []
+source_files:
+    - Backend/requirements.txt
+    - frontend/package.json
+    - frontend/package-lock.json
+depends_on: []
+related_to: []

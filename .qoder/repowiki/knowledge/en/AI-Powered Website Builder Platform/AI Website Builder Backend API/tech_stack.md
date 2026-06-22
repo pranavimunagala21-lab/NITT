@@ -1,0 +1,1 @@
+JWT authentication with HS256 signing via python-jose; password hashing with PBKDF2-SHA256 via passlib; Groq LLM API (llama-3.1-8b-instant) for AI content generation; Gmail SMTP for email delivery

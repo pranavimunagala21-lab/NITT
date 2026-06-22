@@ -1,0 +1,2 @@
+- API base URL is hardcoded as 'http://127.0.0.1:8000' in both frontend services and main application logic.
+- Authentication tokens are consistently managed via localStorage keys ('token', 'userRole') across client-side modules.

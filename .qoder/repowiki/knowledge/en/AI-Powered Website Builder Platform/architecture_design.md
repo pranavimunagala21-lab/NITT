@@ -1,0 +1,4 @@
+- The platform follows a decoupled client-server architecture where the React SPA (frontend) communicates with the FastAPI service (Backend) via RESTful HTTP endpoints.
+- Authentication is enforced through JWT Bearer tokens issued by the backend and stored in the frontend's localStorage, with route guards in App.js restricting access based on user roles (admin vs. user).
+- Persistent state for users and generated projects is managed by a shared MongoDB instance, accessed exclusively by the backend via pymongo.
+- The frontend implements a hybrid data strategy for administrative dashboards, prioritizing real-time backend API calls while falling back to localized localStorage caches for resilience and offline-like performance.

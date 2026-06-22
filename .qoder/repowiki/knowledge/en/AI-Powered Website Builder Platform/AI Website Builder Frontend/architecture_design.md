@@ -1,0 +1,5 @@
+- Entry point: `src/index.js` bootstraps `App.js` which defines the root `BrowserRouter` and protected/public routes.
+- Routing & Guards: `App.js` implements `ProtectedRoute`, `PublicOnlyRoute`, and `AdminRoute` guards using `react-router-dom` to manage access based on JWT tokens stored in `localStorage`.
+- State Management: Relies on `localStorage` for persistent client-side state (users, websites, feedback, AI logs) and `sessionStorage` for transient preview data, synchronized with a backend API at `http://127.0.0.1:8000`.
+- Service Layer: `src/services/adminApi.js` encapsulates all data interactions, providing a hybrid data source that prefers backend REST endpoints but falls back to `localStorage` for resilience or offline-like behavior.
+- Component Structure: Organized into `pages` (high-level views like `AdminDashboard`, `DashboardPage`), `components` (reusable UI elements like `Charts`, `UsersTable`), and inline functional components within `App.js` for auth flows (Login, Register).

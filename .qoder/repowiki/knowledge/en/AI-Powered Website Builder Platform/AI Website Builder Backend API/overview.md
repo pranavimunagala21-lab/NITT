@@ -1,0 +1,1 @@
+FastAPI backend providing user authentication, AI-powered website generation from business descriptions, and project management with MongoDB persistence.

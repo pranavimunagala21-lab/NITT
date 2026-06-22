@@ -1,0 +1,7 @@
+- Single-file monolithic architecture in `main.py` (1076 lines) housing all route handlers, business logic, template rendering, and LLM integration
+- Modular separation via `db.py` (MongoDB connection and collection exports) and `auth.py` (JWT token utilities), though most auth logic is duplicated inline in `main.py`
+- Empty placeholder files `auth_routes.py`, `project_routes.py`, and `schemas.py` suggest an intended but unimplemented modular routing structure
+- Entry point: FastAPI app instance in `main.py` with startup event for admin seeding (`@app.on_event("startup")`)
+- Dependency direction: routes → auth helpers (`get_current_user`, `require_admin`) → database collections (`users_collection`, `projects_collection`)
+- Template system: four HTML templates (`generic.html`, `modern.html`, `luxury.html`, `creative.html`) rendered via regex-based placeholder substitution with fallback to `picsum.photos` for images
+- External service integration: Groq LLM API (`llama-3.1-8b-instant`) for content generation with deterministic fallback; Gmail SMTP for OTP delivery

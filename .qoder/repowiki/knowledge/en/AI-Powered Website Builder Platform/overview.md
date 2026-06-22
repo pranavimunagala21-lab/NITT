@@ -1,0 +1,1 @@
+Orchestrates a React frontend and FastAPI backend to enable users to generate, manage, and administer business websites using AI-driven content synthesis.

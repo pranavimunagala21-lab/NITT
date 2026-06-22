@@ -1,0 +1,1 @@
+React 19 (frontend) and FastAPI (backend) communicate via JSON over HTTP, with MongoDB serving as the centralized persistent store for user identities and project artifacts.

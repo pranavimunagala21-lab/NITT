@@ -1,0 +1,1 @@
+React 19 with `react-scripts` (CRA) build system, `recharts` for data visualization, and `axios`/`fetch` for HTTP communication.

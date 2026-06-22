@@ -1,156 +1,431 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{name}}</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
-      color: #243044;
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand Color System override variables */
+      --primary: #2563eb;
+      --secondary: #dbeafe;
+      --accent: #2563eb;
+      --background: #f0f4fa;
+      --text: #1a2b4a;
+      --gradient: linear-gradient(135deg, var(--primary), #1d4ed8);
+      --text-on-primary: #ffffff;
+      --text-on-gradient: #ffffff;
+
+      --bg:    var(--background);
+      --card:  #ffffff;
+      --text:  var(--text);
+      --muted: #5a6a85;
+      --accent: var(--primary);
+      --accent-light: var(--secondary);
+      --border: #e2e8f0;
+      --radius: 14px;
     }
 
-    .hero {
-      min-height: 460px;
+    html, body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    /* â”€â”€ Preview vs Published â”€â”€ */
+    body.preview {
+      overflow-y: auto;
+      height: auto;
+    }
+    body.published {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* â”€â”€ Container â”€â”€ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      height: 100%;
+    }
+
+    body.preview .container {
+      min-height: 100vh;
+    }
+    body.published .container {
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* â”€â”€ Header â”€â”€ */
+    .header {
       display: flex;
       align-items: center;
-      justify-content: center;
-      padding: 80px 24px;
-      text-align: center;
-      color: white;
-      background-image: linear-gradient(rgba(23, 32, 51, 0.55), rgba(23, 32, 51, 0.55)), url('{{hero_image}}');
-      background-size: cover;
-      background-position: center;
-      box-sizing: border-box;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+      padding: 14px 20px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
     }
 
-    .hero-inner {
-      max-width: 760px;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-      margin-bottom: 18px;
-    }
-
-    .hero h1 {
-      margin: 0;
-      font-size: 46px;
-      line-height: 1.1;
-    }
-
-    .hero p {
-      margin: 16px 0 0;
-      font-size: 20px;
-      color: #ffffff;
-    }
-
-    .section {
-      max-width: 900px;
-      margin: 28px auto;
-      padding: 34px;
-      background: white;
-      border-radius: 14px;
-      box-shadow: 0 12px 32px rgba(23, 32, 51, 0.09);
-      box-sizing: border-box;
-    }
-
-    h2 {
-      margin: 0 0 18px;
-      color: #172033;
-      font-size: 28px;
-    }
-
-    p {
-      color: #536173;
-      line-height: 1.7;
-    }
-
-    .about-card {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 24px;
+    .brand {
+      display: flex;
       align-items: center;
+      gap: 12px;
+      min-width: 0;
     }
 
-    .section-img {
+    .brand img {
+      height: 44px;
+      width: auto;
+      object-fit: contain;
+      flex-shrink: 0;
+      border-radius: 6px;
+    }
+
+    .brand-text { min-width: 0; }
+
+    .brand-text strong {
+      display: block;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .brand-text span {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 200px;
+    }
+
+    .header-contact {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .header-contact span {
+      font-size: 0.78rem;
+      color: var(--muted);
+      padding: 6px 12px;
+      background: var(--accent-light);
+      border-radius: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 180px;
+    }
+
+    /* â”€â”€ Hero â”€â”€ */
+    .hero {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      padding: 28px 24px;
+      background: var(--gradient);
+      border-radius: var(--radius);
+      color: var(--text-on-gradient);
+      flex-shrink: 0;
+    }
+
+    body.preview .hero { min-height: 180px; }
+    body.published .hero { flex: 1 1 0; min-height: 0; }
+
+    .hero-content {
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .hero-content h1 {
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-content p {
+      font-size: clamp(0.85rem, 1.2vw, 1rem);
+      line-height: 1.5;
+      opacity: 0.9;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      flex: 0 1 280px;
+      min-width: 0;
+    }
+
+    .hero-image img {
       width: 100%;
-      height: 220px;
+      height: auto;
       object-fit: cover;
       border-radius: 12px;
+      display: block;
+      border: 2px solid rgba(255,255,255,0.2);
     }
 
-    ul {
-      margin: 0;
-      padding-left: 22px;
-      color: #3e4b5f;
-      line-height: 1.9;
-    }
-
-    li {
-      margin-bottom: 8px;
-    }
-
-    .contact-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    /* â”€â”€ Services â”€â”€ */
+    .services {
+      display: flex;
+      flex-direction: column;
       gap: 14px;
+      flex-shrink: 0;
     }
 
-    .contact-grid p {
-      margin: 0;
-      padding: 14px;
+    body.published .services { flex: 1 1 0; min-height: 0; }
+
+    .services-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .services-grid {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .service-card {
+      flex: 1;
+      min-width: 220px;
+      padding: 18px;
+      border-radius: var(--radius);
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .service-card > span {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+
+    .service-card-image {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
       border-radius: 10px;
-      background: #f5f7fb;
+      display: block;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
     }
 
-    @media (max-width: 760px) {
-      .about-card,
-      .contact-grid {
-        grid-template-columns: 1fr;
-      }
+    .service-card h3 {
+      font-size: 0.92rem;
+      font-weight: 700;
+      line-height: 1.2;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
 
-      .hero h1 {
-        font-size: 36px;
-      }
+    .service-card p {
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* â”€â”€ CTA â”€â”€ */
+    .cta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 18px 22px;
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .cta-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .cta-info strong {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .cta-info span {
+      font-size: 0.82rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 300px;
+    }
+
+    .cta-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 12px 24px;
+      background: var(--accent);
+      color: var(--text-on-primary);
+      font-weight: 700;
+      font-size: 0.88rem;
+      border-radius: 10px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .cta-contact {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cta-contact span {
+      font-size: 0.76rem;
+      color: var(--muted);
+      padding: 5px 10px;
+      background: var(--accent-light);
+      border-radius: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 160px;
+    }
+
+    img { max-width: 100%; height: auto; object-fit: cover; }
+
+    /* ── Contact Links ── */
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-links .btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 0.84rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .contact-links .btn:hover { opacity: 0.8; }
+    .contact-links .btn-call { background: var(--accent); color: var(--text-on-primary); }
+    .contact-links .btn-wa { background: #25d366; color: #fff; }
+    .contact-links .btn-map { background: #1a73e8; color: #fff; }
+    .contact-links .btn-ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #bc1888); color: #fff; }
+    .contact-links .btn-tw { background: #1da1f2; color: #fff; }
+    .contact-links .btn-yt { background: #ff0000; color: #fff; }
+
+    @media (max-width: 768px) {
+      .hero { flex-direction: column; }
+      .hero-image { flex: 1 1 100%; }
     }
   </style>
 </head>
+<body class="preview">
+  <div class="container">
 
-<body>
-  <div class="hero">
-    <div class="hero-inner">
-      <img src="{{logo}}" class="logo" />
-      <h1 contenteditable="true">{{name}}</h1>
-      <p contenteditable="true">{{tagline}}</p>
-    </div>
-  </div>
+    <header class="header">
+      <div class="brand">
+        <img src="/nit-trichy-logo.png" alt="NIT Trichy" />
+        <img src="{{logo}}" alt="{{name}} logo" />
+        <div class="brand-text">
+          <strong>{{name}}</strong>
+          <span>{{tagline}}</span>
+        </div>
+      </div>
+      <div class="header-contact">
+        <span>{{phone}}</span>
+        <span>{{email}}</span>
+      </div>
+    </header>
 
-  <div class="section about-card">
-    <img src="{{about_image}}" class="section-img" />
-    <div>
-      <h2 contenteditable="true">About Us</h2>
-      <p contenteditable="true">{{description}}</p>
-    </div>
-  </div>
+    <section class="hero">
+      <div class="hero-content">
+        <h1>{{name}}</h1>
+        <p>{{tagline}}</p>
+      </div>
+      <div class="hero-image">
+        <img src="{{hero_image}}" alt="Hero for {{name}}"
+             onerror="this.onerror=null;this.src='https://picsum.photos/seed/fallback/1200/600';" />
+      </div>
+    </section>
 
-  <div class="section">
-    <h2 contenteditable="true">Our Services</h2>
-    <ul>
-      {{services}}
-    </ul>
-  </div>
+    <section class="services">
+      <h2 class="services-title">Our Services</h2>
+      <div class="services-grid">
+        {{services}}
+      </div>
+    </section>
 
-  <div class="section">
-    <h2 contenteditable="true">Contact</h2>
-    <div class="contact-grid">
-      <p><strong>Phone:</strong> {{phone}}</p>
-      <p><strong>Email:</strong> {{email}}</p>
-      <p><strong>Address:</strong> {{address}}</p>
-      <p><strong>Hours:</strong> {{hours}}</p>
-    </div>
+    <section class="cta">
+      <div class="cta-info">
+        <strong>Get in Touch</strong>
+        <span>{{address}}</span>
+      </div>
+      <a href="#" class="cta-btn">Contact Us</a>
+      <div class="cta-contact">
+        <span>{{phone}}</span>
+        <span>{{email}}</span>
+        <span>{{hours}}</span>
+      </div>
+      {{contact_links}}
+    </section>
+
   </div>
 </body>
 </html>

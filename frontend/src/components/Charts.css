@@ -1,0 +1,27 @@
+.chart-card {
+  background: #fff;
+  border-radius: 14px;
+  padding: 20px 20px 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+}
+.chart-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a2332;
+  margin: 0 0 16px;
+}
+
+.no-data-chart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  color: #647084;
+}
+.no-data-chart p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  font-weight: 500;
+}
+

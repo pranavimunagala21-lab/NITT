@@ -1,0 +1,1 @@
+Requires environment variables in `.env`: `MONGODB_URI` (default localhost:27017), `SECRET_KEY` (default 'supersecretkey'), `GROQ_API_KEY` (optional, falls back to deterministic content), `SMTP_USER`/`SMTP_PASS` (Gmail credentials for OTP emails). Admin account auto-seeded on startup at admin@nitt.edu / admin123.

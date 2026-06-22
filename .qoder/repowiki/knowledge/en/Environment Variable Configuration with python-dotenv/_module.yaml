@@ -1,0 +1,13 @@
+schema_version: 1
+module_path: configuration_system
+title: Environment Variable Configuration with python-dotenv
+scope: []
+source_files:
+    - Backend/.env
+    - Backend/main.py
+    - Backend/db.py
+    - Backend/requirements.txt
+    - frontend/src/App.js
+    - frontend/src/services/adminApi.js
+depends_on: []
+related_to: []
