@@ -10,24 +10,31 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Brand Color System override variables */
-      --primary: #6d28d9;
-      --secondary: #ec4899;
-      --accent: #38bdf8;
-      --background: #4c1d95;
-      --text: #ffffff;
-      --gradient: linear-gradient(135deg, var(--background) 0%, var(--primary) 30%, var(--secondary) 70%, var(--accent) 100%);
-      --text-on-primary: #ffffff;
-      --text-on-gradient: #ffffff;
-      --text-rgb: 255, 255, 255;
+      /* ── Theme: Violet-to-Pink SaaS gradient – white text throughout ── */
+      --brand-from:    #4c1d95;        /* deep violet        */
+      --brand-mid:     #6d28d9;        /* vivid violet       */
+      --brand-to:      #ec4899;        /* pink accent        */
+      --brand-sky:     #38bdf8;        /* highlight / sky    */
 
-      --violet: var(--primary);
-      --pink:   var(--secondary);
-      --sky:    var(--accent);
-      --muted:  rgba(var(--text-rgb), 0.72);
-      --glass:  rgba(var(--text-rgb), 0.1);
-      --glass-border: rgba(var(--text-rgb), 0.16);
-      --radius: 16px;
+      /* Semantic aliases */
+      --primary:          var(--brand-mid);
+      --secondary:        var(--brand-to);
+      --accent:           var(--brand-sky);
+      --radius:           16px;
+
+      /* Body & hero: full-bleed gradient */
+      --body-bg:   linear-gradient(135deg, var(--brand-from) 0%, var(--brand-mid) 35%, var(--brand-to) 75%, var(--brand-sky) 100%);
+
+      /* Glass surfaces – sit over the gradient */
+      --glass:        rgba(255, 255, 255, 0.10);
+      --glass-border: rgba(255, 255, 255, 0.18);
+
+      /* Text – always white on this dark gradient */
+      --text:              #ffffff;
+      --text-rgb:          255, 255, 255;
+      --muted:             rgba(255, 255, 255, 0.72);
+      --text-on-primary:   #ffffff;
+      --text-on-gradient:  #ffffff;
     }
 
     html, body {
@@ -35,7 +42,7 @@
       margin: 0;
       padding: 0;
       font-family: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
-      background: var(--gradient);
+      background: var(--body-bg);
       color: var(--text);
     }
 
@@ -203,7 +210,7 @@
     }
 
     .btn-primary {
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--brand-mid), var(--brand-to));
       color: var(--text-on-primary);
     }
 
@@ -346,7 +353,7 @@
     .cta-btn {
       padding: 11px 22px;
       border-radius: 12px;
-      background: var(--primary);
+      background: linear-gradient(135deg, var(--brand-mid), var(--brand-to));
       color: var(--text-on-primary);
       font-weight: 800;
       font-size: 0.86rem;

@@ -7,7 +7,6 @@ import {
   useLocation,
   Navigate,
 } from "react-router-dom";
-import tinycolor from "tinycolor2";
 import "./App.css";
 import AdminDashboard from "./pages/AdminDashboard";
 import { trackUser, trackWebsite, trackAiRequest } from "./services/adminApi";
@@ -1537,73 +1536,9 @@ function ChatPanel({ html, previewRef }) {
   );
 }
 
-function generatePalette(base) {
-  const brand = tinycolor(base);
-  
-  // Core brand palette
-  const primary = base;
-  const secondary = brand.clone().lighten(20).toString();
-  const accent = brand.clone().saturate(30).toString();
-  
-  // Background selection based on whether base color is light or dark
-  const isLight = brand.isLight();
-  const hsl = brand.toHsl();
-  const bgHsl = { ...hsl };
-  if (isLight) {
-    bgHsl.l = Math.max(0.95, hsl.l + 0.4);
-    bgHsl.s = Math.min(0.1, hsl.s); // desaturate for clean premium background
-  } else {
-    bgHsl.l = Math.min(0.08, hsl.l - 0.4);
-    bgHsl.s = Math.min(0.15, hsl.s); // subtle brand saturation
-  }
-  const background = tinycolor(bgHsl).toHexString();
-  
-  // Determine text colors for readability
-  const bodyText = tinycolor(background).isLight() ? "#0f172a" : "#f8fafc";
-  
-  // Hero gradient (starts with base, blends to a darker version of base)
-  const gradient = `linear-gradient(135deg, ${base}, ${brand.clone().darken(20).toString()})`;
-  
-  // Text on primary (buttons) and text on gradient (hero)
-  const textOnPrimary = brand.isLight() ? "#000000" : "#ffffff";
-  const textOnGradient = brand.clone().darken(10).isLight() ? "#000000" : "#ffffff";
 
-  // RGB versions for translucency (rgba functions)
-  const pRgb = brand.toRgb();
-  const sRgb = tinycolor(secondary).toRgb();
-  const bgRgb = tinycolor(background).toRgb();
-  const tRgb = tinycolor(bodyText).toRgb();
 
-  return {
-    primary,
-    "primary-rgb": `${pRgb.r}, ${pRgb.g}, ${pRgb.b}`,
-    secondary,
-    "secondary-rgb": `${sRgb.r}, ${sRgb.g}, ${sRgb.b}`,
-    accent,
-    background,
-    "background-rgb": `${bgRgb.r}, ${bgRgb.g}, ${bgRgb.b}`,
-    text: bodyText,
-    "text-rgb": `${tRgb.r}, ${tRgb.g}, ${tRgb.b}`,
-    gradient,
-    "text-on-primary": textOnPrimary,
-    "text-on-gradient": textOnGradient,
-    "accent-light": brand.clone().lighten(35).toString()
-  };
-}
 
-function getPrimaryColorFromHtml(htmlString, defaultColor = "#7c3aed") {
-  try {
-    if (!htmlString) return defaultColor;
-    const doc = new DOMParser().parseFromString(htmlString, "text/html");
-    const primary = doc.documentElement.style.getPropertyValue("--primary");
-    if (primary && primary.trim()) {
-      return primary.trim();
-    }
-  } catch (e) {
-    console.error("Failed to parse primary color from HTML:", e);
-  }
-  return defaultColor;
-}
 
 // ─── Preview / Edit ───────────────────────────────────────────────────────────
 function PreviewPage() {
@@ -1619,14 +1554,12 @@ function PreviewPage() {
   const generatedData = location.state?.data || null;
 
   const [html,           setHtml]           = useState(initialHtml);
-  const [baseColor,      setBaseColor]      = useState(() => {
-    const extracted = getPrimaryColorFromHtml(initialHtml, "");
-    if (extracted) return extracted;
-    return localStorage.getItem("baseColor") || "#7c3aed";
-  });
+
   const [editMode,       setEditMode]       = useState(false);
   const [selectedEl,     setSelectedEl]     = useState(null);
   const [selectedImage,  setSelectedImage]  = useState(null);
+  const [selectedSection, setSelectedSection] = useState(null);
+  const [sectionBgColor,  setSectionBgColor]  = useState("#ffffff");
   const [textColor,      setTextColor]      = useState("#000000");
   const [bgColor,        setBgColor]        = useState("#ffffff");
   const [saving,         setSaving]         = useState(false);
@@ -1637,24 +1570,7 @@ function PreviewPage() {
     location.state?.isPublished && projectId ? `${API_URL}/published/${projectId}` : ""
   );
 
-  // Sync palette properties whenever baseColor changes
-  useEffect(() => {
-    localStorage.setItem("baseColor", baseColor);
-    const palette = generatePalette(baseColor);
-    
-    // Apply to host document root
-    Object.keys(palette).forEach((key) => {
-      document.documentElement.style.setProperty(`--${key}`, palette[key]);
-    });
-    
-    // Apply to iframe root
-    const iframeDoc = previewRef.current?.contentDocument;
-    if (iframeDoc?.documentElement) {
-      Object.keys(palette).forEach((key) => {
-        iframeDoc.documentElement.style.setProperty(`--${key}`, palette[key]);
-      });
-    }
-  }, [baseColor]);
+
 
   const resizePreviewFrame = useCallback(() => {
     const frame = previewRef.current;
@@ -1673,20 +1589,119 @@ function PreviewPage() {
   const syncEditMode = useCallback(() => {
     const root = getPreviewRoot(previewRef.current);
     if (!root) return;
-    applyEditMode(root, editMode, setSelectedEl, setSelectedImage, resizePreviewFrame);
+    applyEditMode(root, editMode, setSelectedEl, setSelectedImage, resizePreviewFrame, setSelectedSection);
+
+    const iframeDoc = previewRef.current?.contentDocument;
+    if (iframeDoc) {
+      const STYLE_ID = "__kiro_edit_style__";
+      let styleEl = iframeDoc.getElementById(STYLE_ID);
+
+      // ── Part 1: global layout normalisation (always injected) ────────────────
+      const NORM_ID = "__kiro_norm_style__";
+      if (!iframeDoc.getElementById(NORM_ID)) {
+        const normEl = iframeDoc.createElement("style");
+        normEl.id = NORM_ID;
+        normEl.textContent = `
+          @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+          /* ── Global reset & typography ── */
+          *, *::before, *::after { box-sizing: border-box; }
+          html { scroll-behavior: smooth; }
+          body {
+            font-family: 'Poppins', 'Inter', system-ui, sans-serif !important;
+            line-height: 1.6 !important;
+            margin: 0 !important;
+          }
+
+          /* ── Responsive images ── */
+          img {
+            max-width: 100% !important;
+            height: auto !important;
+            border-radius: 10px !important;
+            display: block;
+          }
+
+          /* ── Section spacing ── */
+          section {
+            padding: 60px 20px !important;
+          }
+
+          /* ── Service / feature card grids ── */
+          .services-grid,
+          .features-grid {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 20px !important;
+          }
+          .service-card,
+          .feature-card,
+          .creative-card {
+            flex: 1 1 220px !important;
+            min-width: 200px !important;
+          }
+
+          /* ── Hero: centred headline ── */
+          .hero,
+          .hero-content {
+            text-align: center;
+          }
+          .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 3rem) !important;
+            font-weight: 700 !important;
+          }
+
+          /* ── Inner wrapper for custom sections ── */
+          [data-section="custom"] > div {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+          }
+        `;
+        iframeDoc.head.appendChild(normEl);
+      }
+
+      // ── Part 2 / 4: edit-mode highlights (only while editing) ────────────────
+      if (editMode && !styleEl) {
+        styleEl = iframeDoc.createElement("style");
+        styleEl.id = STYLE_ID;
+        styleEl.textContent = `
+          /* Selected section outline */
+          .section-selected {
+            outline: 2.5px dashed #6366f1 !important;
+            outline-offset: 4px;
+          }
+
+          /* Hover outline for all sections */
+          header:hover,
+          section:hover,
+          .hero:hover,
+          .services:hover,
+          .cta:hover,
+          .about-panel:hover,
+          footer:hover,
+          [data-section]:hover {
+            outline: 1.5px dashed rgba(99, 102, 241, 0.45) !important;
+            outline-offset: 3px;
+            cursor: pointer;
+          }
+
+          /* Smooth outline transitions */
+          header, section, .hero, .services, .cta, .about-panel, footer, [data-section] {
+            transition: outline 0.12s ease, background-color 0.2s ease;
+          }
+        `;
+        iframeDoc.head.appendChild(styleEl);
+      } else if (!editMode && styleEl) {
+        styleEl.remove();
+      }
+    }
+
     window.setTimeout(resizePreviewFrame, 0);
-  }, [editMode, resizePreviewFrame]);
+  }, [editMode, resizePreviewFrame, setSelectedSection]);
 
   const handleIframeLoad = useCallback(() => {
     syncEditMode();
-    const iframeDoc = previewRef.current?.contentDocument;
-    if (iframeDoc?.documentElement) {
-      const palette = generatePalette(baseColor);
-      Object.keys(palette).forEach((key) => {
-        iframeDoc.documentElement.style.setProperty(`--${key}`, palette[key]);
-      });
-    }
-  }, [syncEditMode, baseColor]);
+  }, [syncEditMode]);
 
   // ── Toggle edit mode wiring without re-rendering HTML ────────────────────────
   useEffect(() => {
@@ -1844,6 +1859,75 @@ function PreviewPage() {
     resizePreviewFrame();
   };
 
+  // ── Section background color (section-level click) ────────────────────────────
+  const applySectionBgColor = (color) => {
+    setSectionBgColor(color);
+    if (selectedSection) {
+      selectedSection.style.backgroundColor = color;
+    }
+  };
+
+  // ── Move section up/down ──────────────────────────────────────────────────────
+  const moveSectionUp = () => {
+    if (!selectedSection) return;
+    const prev = selectedSection.previousElementSibling;
+    if (prev) {
+      selectedSection.parentNode.insertBefore(selectedSection, prev);
+      resizePreviewFrame();
+    }
+  };
+
+  const moveSectionDown = () => {
+    if (!selectedSection) return;
+    const next = selectedSection.nextElementSibling;
+    if (next) {
+      selectedSection.parentNode.insertBefore(next, selectedSection);
+      resizePreviewFrame();
+    }
+  };
+
+  // ── Delete selected section ────────────────────────────────────────────────
+  const deleteSection = () => {
+    if (!selectedSection) return;
+    selectedSection.remove();
+    setSelectedSection(null);
+    resizePreviewFrame();
+  };
+
+  // ── Add new blank section ──────────────────────────────────────────────────
+  const addNewSection = () => {
+    const iframeDoc = previewRef.current?.contentDocument;
+    if (!iframeDoc) return;
+
+    const sec = iframeDoc.createElement("section");
+    sec.setAttribute("data-section", "custom");
+    sec.style.cssText = [
+      "padding: 60px 20px",
+      "text-align: center",
+      "background: #ffffff",
+      "border-top: 1px solid #e2e8f0",
+    ].join("; ");
+
+    sec.innerHTML = `
+      <div style="max-width:760px;margin:0 auto">
+        <h2 style="font-size:1.8rem;font-weight:700;margin-bottom:12px;color:#1e293b">New Section</h2>
+        <p style="font-size:1rem;color:#64748b;line-height:1.7">Click to edit this content. Add your text, images, or links here.</p>
+      </div>
+    `;
+
+    iframeDoc.body.appendChild(sec);
+
+    // Wire it into edit mode immediately if we're already editing
+    if (editMode) {
+      const root = getPreviewRoot(previewRef.current);
+      if (root) {
+        applyEditMode(root, true, setSelectedEl, setSelectedImage, resizePreviewFrame, setSelectedSection);
+      }
+    }
+
+    resizePreviewFrame();
+  };
+
   // ── TASK 8: Image upload — only when editMode ─────────────────────────────────
   const handleImageUpload = (e) => {
     if (!editMode || !selectedImage) return;
@@ -1865,6 +1949,19 @@ function PreviewPage() {
     getPreviewRoot(previewRef.current)?.querySelectorAll("img").forEach((i) => i.classList.remove("img-selected"));
   };
 
+  // ── Download HTML ─────────────────────────────────────────────────────────────
+  const downloadHTML = () => {
+    const blob = new Blob([html], { type: "text/html" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = "generated-website.html";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   if (!html) return <Navigate to="/dashboard" replace />;
 
   const isSuccess = message.includes("success") || message.includes("published");
@@ -1880,30 +1977,7 @@ function PreviewPage() {
           ← Back
         </button>
 
-        <div className="brand-color-controls">
-          <span className="brand-color-label">Brand Color:</span>
-          <div className="color-picker-wrapper">
-            <input
-              type="color"
-              value={baseColor}
-              onChange={(e) => setBaseColor(e.target.value)}
-              className="brand-color-picker"
-              title="Choose Brand Color"
-            />
-          </div>
-          <div className="color-presets">
-            {["#7c3aed", "#ec4899", "#2563eb", "#16a34a"].map((color) => (
-              <button
-                key={color}
-                type="button"
-                className={`preset-circle${baseColor === color ? " active" : ""}`}
-                style={{ backgroundColor: color }}
-                onClick={() => setBaseColor(color)}
-                title={`Preset ${color}`}
-              />
-            ))}
-          </div>
-        </div>
+
 
         <div className="preview-actions">
           <button type="button" className="icon-action-btn" title="Save"
@@ -1919,6 +1993,25 @@ function PreviewPage() {
             title={editMode ? "Done Editing" : "Edit Website"}
             onClick={toggleEdit}>
             {editMode ? "✅" : "✏️"}
+          </button>
+          {editMode && (
+            <button
+              type="button"
+              className="add-section-btn"
+              title="Add a new blank section"
+              onClick={addNewSection}
+            >
+              ＋ Add Section
+            </button>
+          )}
+          <button
+            type="button"
+            className="download-btn"
+            title="Download Website"
+            onClick={downloadHTML}
+            disabled={!html}
+          >
+            ⬇ Download
           </button>
         </div>
       </div>
@@ -1940,7 +2033,7 @@ function PreviewPage() {
         {editMode && (
           <div className="edit-toolbar">
 
-            {/* Task 2: Text alignment */}
+            {/* Text alignment */}
             <div className="toolbar-group">
               <span className="toolbar-label">Align</span>
               <button type="button" className="toolbar-icon-btn" title="Align left"
@@ -1951,7 +2044,7 @@ function PreviewPage() {
                 onClick={() => applyAlign("right")}>➡️</button>
             </div>
 
-            {/* Task 1: Font size */}
+            {/* Font size */}
             <div className="toolbar-group">
               <span className="toolbar-label">Size</span>
               <button type="button" className="toolbar-icon-btn" title="Increase font"
@@ -1962,19 +2055,50 @@ function PreviewPage() {
 
             {/* Text color */}
             <div className="toolbar-group">
-              <label className="toolbar-label" htmlFor="textColorPicker">🎨</label>
+              <label className="toolbar-label" htmlFor="textColorPicker">🎨 Text</label>
               <input id="textColorPicker" type="color" value={textColor}
                 onChange={(e) => applyTextColor(e.target.value)}
                 title="Text color" className="color-picker" />
             </div>
 
-            {/* Section background */}
-            <div className="toolbar-group">
-              <label className="toolbar-label" htmlFor="bgColorPicker">🖌</label>
-              <input id="bgColorPicker" type="color" value={bgColor}
-                onChange={(e) => applyBgColor(e.target.value)}
-                title="Section background" className="color-picker" />
-            </div>
+            {/* Section panel — shown when a section is selected */}
+            {selectedSection ? (
+              <div className="toolbar-group section-toolbar-group">
+                <span className="toolbar-label section-label">📦 Section</span>
+                <label className="toolbar-label" htmlFor="sectionBgPicker" title="Section background color">
+                  🖌 BG
+                </label>
+                <input
+                  id="sectionBgPicker"
+                  type="color"
+                  value={sectionBgColor}
+                  onChange={(e) => applySectionBgColor(e.target.value)}
+                  title="Change section background"
+                  className="color-picker"
+                />
+                <button type="button" className="toolbar-btn move-btn" title="Move section up"
+                  onClick={moveSectionUp}
+                  disabled={!selectedSection?.previousElementSibling}>
+                  ↑ Up
+                </button>
+                <button type="button" className="toolbar-btn move-btn" title="Move section down"
+                  onClick={moveSectionDown}
+                  disabled={!selectedSection?.nextElementSibling}>
+                  ↓ Down
+                </button>
+                <button type="button" className="toolbar-btn delete-section-btn" title="Delete this section"
+                  onClick={deleteSection}>
+                  🗑 Delete
+                </button>
+              </div>
+            ) : (
+              <div className="toolbar-group">
+                <label className="toolbar-label" htmlFor="bgColorPicker">🖌 BG</label>
+                <input id="bgColorPicker" type="color" value={bgColor}
+                  onChange={(e) => applyBgColor(e.target.value)}
+                  title="Element background" className="color-picker" />
+              </div>
+            )}
 
             {/* Image controls */}
             {selectedImage && (
@@ -1989,7 +2113,11 @@ function PreviewPage() {
             )}
 
             <span className="edit-hint-inline">
-              {selectedEl ? "Element selected ✓" : "Click text to select"}
+              {selectedSection
+                ? "Section selected — edit BG, reorder, or delete ✓"
+                : selectedEl
+                  ? "Text element selected ✓"
+                  : "Click a section or text to edit"}
             </span>
           </div>
         )}
@@ -2021,9 +2149,10 @@ function PreviewPage() {
 }
 
 // ─── Apply / remove edit mode on preview DOM ──────────────────────────────────
-function applyEditMode(container, active, setSelectedEl, setSelectedImage, resizePreviewFrame) {
+function applyEditMode(container, active, setSelectedEl, setSelectedImage, resizePreviewFrame, setSelectedSection) {
   if (!container) return;
 
+  // ── Editable text elements ────────────────────────────────────────────────────
   container
     .querySelectorAll(".editable, h1, h2, h3, p, .service-card h3, .feature-card h3, .service-line span:last-child, .nav-chip, .footer-note span")
     .forEach((el) => {
@@ -2031,7 +2160,7 @@ function applyEditMode(container, active, setSelectedEl, setSelectedImage, resiz
       el.contentEditable = active ? "true" : "false";
       if (active) {
         el.classList.add("editing-active");
-        el.onclick = () => setSelectedEl(el);
+        el.onclick = (e) => { e.stopPropagation(); setSelectedEl(el); };
         el.oninput = () => resizePreviewFrame?.();
       } else {
         el.classList.remove("editing-active");
@@ -2040,6 +2169,32 @@ function applyEditMode(container, active, setSelectedEl, setSelectedImage, resiz
       }
     });
 
+  // ── Clickable sections ────────────────────────────────────────────────────────
+  const SECTION_SEL = "header, section, .hero, .services, .cta, .about-panel, footer, [data-section]";
+  container.querySelectorAll(SECTION_SEL).forEach((sec) => {
+    if (active) {
+      sec.style.cursor = "pointer";
+      sec._sectionClick = (e) => {
+        // Don't steal click from text editing
+        if (e.target.isContentEditable) return;
+        e.stopPropagation();
+        // Deselect previous
+        container.querySelectorAll(".section-selected").forEach((s) => s.classList.remove("section-selected"));
+        sec.classList.add("section-selected");
+        if (setSelectedSection) setSelectedSection(sec);
+      };
+      sec.addEventListener("click", sec._sectionClick);
+    } else {
+      sec.style.cursor = "";
+      sec.classList.remove("section-selected");
+      if (sec._sectionClick) {
+        sec.removeEventListener("click", sec._sectionClick);
+        delete sec._sectionClick;
+      }
+    }
+  });
+
+  // ── Clickable images ──────────────────────────────────────────────────────────
   container.querySelectorAll("img").forEach((img) => {
     if (active) {
       img.style.cursor = "pointer";
@@ -2059,8 +2214,9 @@ function applyEditMode(container, active, setSelectedEl, setSelectedImage, resiz
   });
 
   if (!active) {
-    if (setSelectedEl)    setSelectedEl(null);
-    if (setSelectedImage) setSelectedImage(null);
+    if (setSelectedEl)      setSelectedEl(null);
+    if (setSelectedImage)   setSelectedImage(null);
+    if (setSelectedSection) setSelectedSection(null);
   }
 }
 

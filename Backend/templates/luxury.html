@@ -10,26 +10,33 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Brand Color System override variables */
-      --primary: #d0ac6e;
-      --secondary: rgba(208, 172, 110, 0.6);
-      --accent: #d0ac6e;
-      --background: #0a0a0a;
-      --text: #f5efe6;
-      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-      --text-on-primary: #0a0a0a;
-      --text-on-gradient: #0a0a0a;
-      --primary-rgb: 208, 172, 110;
-      --text-rgb: 245, 239, 230;
+      /* ── Theme: Dark Luxury – deep backgrounds, gold accents, cream text ── */
+      --gold-bright:  #d0ac6e;        /* warm gold highlight */
+      --gold-dim:     rgba(208, 172, 110, 0.55);
+      --dark-1:       #0a0a0a;        /* near-black base     */
+      --dark-2:       #141008;        /* warm dark tone      */
+      --dark-mid:     #1a1508;        /* midpoint warm dark  */
 
-      --bg:      var(--background);
+      /* Body: subtle radial warmth, not flat black */
+      --body-bg:   radial-gradient(ellipse at 60% 10%, #1c1305 0%, var(--dark-1) 65%);
+
+      /* Semantic aliases */
+      --primary:         var(--gold-bright);
+      --accent:          var(--gold-bright);
+      --radius:          4px;
+      --primary-rgb:     208, 172, 110;
+      --text-rgb:        245, 239, 230;
+
+      --bg:      var(--dark-1);
       --surface: rgba(var(--text-rgb), 0.03);
-      --border:  rgba(var(--primary-rgb), 0.2);
-      --gold:    var(--primary);
-      --gold-dim: var(--secondary);
-      --text:    var(--text);
-      --muted:   rgba(var(--text-rgb), 0.55);
-      --radius:  4px;
+      --border:  rgba(var(--primary-rgb), 0.20);
+      --gold:    var(--gold-bright);
+
+      /* Text – cream on dark, near-black on gold */
+      --text:             #f5efe6;
+      --muted:            rgba(245, 239, 230, 0.55);
+      --text-on-primary:  #0a0a0a;
+      --text-on-gradient: #0a0a0a;
     }
 
     html, body {
@@ -37,7 +44,7 @@
       margin: 0;
       padding: 0;
       font-family: "Cormorant Garamond", Georgia, serif;
-      background: var(--bg);
+      background: var(--body-bg);
       color: var(--text);
     }
 

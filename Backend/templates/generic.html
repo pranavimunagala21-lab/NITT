@@ -10,24 +10,32 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Brand Color System override variables */
-      --primary: #2563eb;
-      --secondary: #dbeafe;
-      --accent: #2563eb;
-      --background: #f0f4fa;
-      --text: #1a2b4a;
-      --gradient: linear-gradient(135deg, var(--primary), #1d4ed8);
-      --text-on-primary: #ffffff;
-      --text-on-gradient: #ffffff;
+      /* ── Theme: Cool Blue – gradient-driven, text stays dark ── */
+      --brand-1:      #2563eb;        /* vivid blue  */
+      --brand-2:      #1d4ed8;        /* deep blue   */
+      --brand-light:  #dbeafe;        /* sky tint    */
+      --brand-xlight: #eff6ff;        /* near-white blue wash */
 
-      --bg:    var(--background);
-      --card:  #ffffff;
-      --text:  var(--text);
-      --muted: #5a6a85;
-      --accent: var(--primary);
-      --accent-light: var(--secondary);
-      --border: #e2e8f0;
-      --radius: 14px;
+      /* Semantic aliases consumed by component styles */
+      --primary:          var(--brand-1);
+      --accent:           var(--brand-1);
+      --accent-light:     var(--brand-light);
+      --border:           #c7d8f8;
+      --radius:           14px;
+
+      /* Background gradient applied to body & hero */
+      --body-bg:   linear-gradient(160deg, var(--brand-xlight) 0%, #f0f4fa 55%, var(--brand-light) 100%);
+      --hero-bg:   linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+
+      /* Card / surface */
+      --card:      #ffffff;
+      --card-tint: linear-gradient(135deg, var(--brand-xlight) 0%, #ffffff 100%);
+
+      /* Text – always dark on light bg, white on colored bg */
+      --text:              #0f172a;
+      --muted:             #475569;
+      --text-on-primary:   #ffffff;
+      --text-on-gradient:  #ffffff;
     }
 
     html, body {
@@ -35,7 +43,7 @@
       margin: 0;
       padding: 0;
       font-family: "Inter", "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
+      background: var(--body-bg);
       color: var(--text);
     }
 
@@ -145,7 +153,7 @@
       gap: 24px;
       flex-wrap: wrap;
       padding: 28px 24px;
-      background: var(--gradient);
+      background: var(--hero-bg);
       border-radius: var(--radius);
       color: var(--text-on-gradient);
       flex-shrink: 0;
@@ -224,7 +232,7 @@
       min-width: 220px;
       padding: 18px;
       border-radius: var(--radius);
-      background: var(--card);
+      background: var(--card-tint);
       border: 1px solid var(--border);
       display: flex;
       flex-direction: column;

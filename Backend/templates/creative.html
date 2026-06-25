@@ -10,27 +10,35 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Brand Color System override variables */
-      --primary: #ea580c;
-      --secondary: #0f766e;
-      --accent: #ea580c;
-      --background: #0c111b;
-      --text: #f9fafb;
-      --gradient: linear-gradient(135deg, var(--primary), var(--secondary));
-      --text-on-primary: #ffffff;
-      --text-on-gradient: #ffffff;
-      --text-rgb: 249, 250, 251;
-      --secondary-rgb: 15, 118, 110;
-      --background-rgb: 12, 17, 27;
+      /* ── Theme: Bold Creative – dark canvas, orange-teal gradient accents ── */
+      --orange:        #ea580c;
+      --orange-light:  #fed7aa;        /* soft peach tint    */
+      --teal:          #0f766e;
+      --teal-mid:      #0d9488;
+      --dark-base:     #0c111b;
 
-      --orange:  var(--primary);
-      --teal:    var(--secondary);
-      --bg:      var(--background);
+      /* Body: deep dark with a warm directional gradient */
+      --body-bg:   linear-gradient(160deg, #0c111b 0%, #0f1623 60%, #0d1a14 100%);
+
+      /* Semantic aliases */
+      --primary:          var(--orange);
+      --secondary:        var(--teal);
+      --accent:           var(--orange);
+      --radius:           18px;
+      --text-rgb:         249, 250, 251;
+      --secondary-rgb:    15, 118, 110;
+      --background-rgb:   12, 17, 27;
+
+      /* Card / surface */
+      --bg:      var(--dark-base);
       --card:    rgba(var(--text-rgb), 0.04);
       --border:  rgba(var(--text-rgb), 0.08);
-      --text:    var(--text);
-      --muted:   rgba(var(--text-rgb), 0.6);
-      --radius:  18px;
+
+      /* Text – always light on dark canvas */
+      --text:              #f9fafb;
+      --muted:             rgba(249, 250, 251, 0.60);
+      --text-on-primary:   #ffffff;
+      --text-on-gradient:  #ffffff;
     }
 
     html, body {
@@ -38,7 +46,7 @@
       margin: 0;
       padding: 0;
       font-family: "Plus Jakarta Sans", sans-serif;
-      background: var(--bg);
+      background: var(--body-bg);
       color: var(--text);
     }
 

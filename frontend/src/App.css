@@ -720,6 +720,26 @@ button, input, textarea, select { font: inherit; }
 .edit-icon-btn   { border-color: #a5b4fc; background: var(--primary-light); }
 .edit-active-btn { border-color: var(--success); background: var(--success-light); }
 
+.download-btn {
+  min-height: 44px;
+  padding: 11px 18px;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--radius);
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+.download-btn:hover:not(:disabled) {
+  background: #dbeafe;
+  border-color: #3b82f6;
+  transform: translateY(-1px);
+}
+.download-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
 /* â”€â”€ Preview page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .preview-page { max-width: 1100px; }
 
@@ -1247,82 +1267,92 @@ body.dark .profile-dropdown button:hover { background: #273549; }
 .card-hover-lift { transition: transform var(--transition), box-shadow var(--transition); }
 .card-hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
 
-/* ── Brand Color Palette System Styles ── */
-.brand-color-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--surface-hover);
-  padding: 6px 14px;
-  border-radius: 99px;
-  border: 1px solid var(--border);
-  margin: 0 16px;
+
+
+/* ── Section editing (Part 2 & 3) ── */
+.section-selected {
+  outline: 2px dashed #6366f1 !important;
+  outline-offset: 3px;
 }
 
-body.dark .brand-color-controls {
-  background: #1e293b;
-  border-color: #334155;
-}
-
-.brand-color-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-primary);
-  white-space: nowrap;
-}
-
-.color-picker-wrapper {
-  position: relative;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 2px solid var(--border);
-  cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: transform var(--transition);
-}
-
-.color-picker-wrapper:hover {
-  transform: scale(1.1);
-}
-
-.brand-color-picker {
-  position: absolute;
-  top: -5px;
-  left: -5px;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  margin: 0;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-}
-
-.color-presets {
-  display: flex;
-  align-items: center;
+.section-toolbar-group {
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 10px;
+  padding: 4px 10px;
   gap: 8px;
 }
 
-.preset-circle {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 2px solid transparent;
+.section-label {
+  color: #4f46e5 !important;
+  font-weight: 700 !important;
+}
+
+.move-btn {
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #c7d2fe;
+  border-radius: 6px;
+  background: #ffffff;
+  color: #4f46e5;
   cursor: pointer;
-  padding: 0;
-  box-sizing: border-box;
-  transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition);
+  transition: background 0.15s, transform 0.1s;
+}
+.move-btn:hover:not(:disabled) {
+  background: #e0e7ff;
+  transform: translateY(-1px);
+}
+.move-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
-.preset-circle:hover {
-  transform: scale(1.15);
+/* ── Delete section button ── */
+.delete-section-btn {
+  min-height: 28px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  background: #fef2f2;
+  color: #dc2626;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+.delete-section-btn:hover {
+  background: #fee2e2;
+  transform: translateY(-1px);
 }
 
-.preset-circle.active {
-  border-color: var(--text-primary);
-  box-shadow: 0 0 0 2px var(--bg);
+/* ── Add Section button (topbar) ── */
+.add-section-btn {
+  min-height: 38px;
+  padding: 8px 16px;
+  border: 1.5px dashed #6366f1;
+  border-radius: var(--radius);
+  background: #eef2ff;
+  color: #4f46e5;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
 }
-
+.add-section-btn:hover {
+  background: #e0e7ff;
+  border-color: #4f46e5;
+  transform: translateY(-1px);
+}
+body.dark .add-section-btn {
+  background: rgba(99, 102, 241, 0.12);
+  border-color: #6366f1;
+  color: #a5b4fc;
+}
+body.dark .delete-section-btn {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: #f87171;
+  color: #f87171;
+}
